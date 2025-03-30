@@ -1,5 +1,6 @@
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import col, year, to_date
+from pyspark.sql.functions import lit, col, year, to_date
+
 import os
 
 # ✅ Iniciar sesión de Spark
