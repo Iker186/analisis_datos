@@ -11,9 +11,11 @@ df = spark.read.csv("./data/social_media.csv", header=True, inferSchema=True)
 # 🧹 Limpieza de datos
 df = df.dropna()
 
+fixed_date = to_date(lit("2025-01-01"), "yyyy-MM-dd")
+
 # 🎂 Calcular edad a partir del DOB
 df = df.withColumn("DOB", to_date(col("DOB"), "yyyy-MM-dd"))
-df = df.withColumn("Edad", year("2025-01-01") - year(col("DOB")))
+df = df.withColumn("Edad", year(fixed_date) - year(col("DOB")))
 
 # 🎯 Seleccionar columnas relevantes
 columns_to_keep = ["UserID", "Country", "City", "Gender", "Interests", "Edad"]
