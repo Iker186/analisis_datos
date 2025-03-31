@@ -53,12 +53,17 @@ jobs:
         git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
         git config --global user.email "adsoft@live.com.mx"
     
+        # 🔥 Guardar cambios antes del pull
+        git stash --include-untracked
+    
         # 🚀 Hacer pull para evitar conflictos
         git pull origin main --rebase
-
+    
+        # 🔄 Restaurar cambios después del pull
+        git stash pop || echo "No changes to restore"
+    
         git add results/
         git commit -m "${{ env.CI_COMMIT_MESSAGE }}" || echo "No changes to commit"
     
-        # ⚡️ Forzar push si es necesario
+        # ⚡️ Push cambios actualizados
         git push origin main
-
