@@ -47,11 +47,18 @@ jobs:
 
     - name: 📤 Commit y Push de resultados
       env: 
-         CI_COMMIT_MESSAGE: save spark results
-         CI_COMMIT_AUTHOR: adsoft 
+        CI_COMMIT_MESSAGE: save spark results
+        CI_COMMIT_AUTHOR: adsoft 
       run: |
         git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
         git config --global user.email "adsoft@live.com.mx"
+    
+        # 🚀 Hacer pull para evitar conflictos
+        git pull origin main --rebase
+
         git add results/
-        git commit -m "${{ env.CI_COMMIT_MESSAGE }}"
-        git push
+        git commit -m "${{ env.CI_COMMIT_MESSAGE }}" || echo "No changes to commit"
+    
+        # ⚡️ Forzar push si es necesario
+        git push origin main
+
