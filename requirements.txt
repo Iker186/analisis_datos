@@ -1,2 +1,8 @@
 matplotlib
 plotly
+streamlit
+pyspark
+kafka-python
+pymongo
+psycopg2-binary
+pandas
