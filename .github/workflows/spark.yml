@@ -63,7 +63,7 @@ jobs:
         CI_COMMIT_AUTHOR: adsoft 
       run: |
         git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
-        git config --global user.email "adsoft@live.com.mx"
+        git config --global user.email "sancheziker549@gmail.com"
     
         # 🔥 Guardar cambios antes del pull
         git stash --include-untracked
