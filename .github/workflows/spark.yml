@@ -56,6 +56,17 @@ jobs:
         KAFKA_SECURITY_PROTOCOL: ${{ secrets.KAFKA_SECURITY_PROTOCOL }}
         KAFKA_SASL_MECHANISM: ${{ secrets.KAFKA_SASL_MECHANISM }}
 
+    - name: 🧾 Consumir mensajes de Kafka y guardar en MongoDB
+      run: python consumer_mongo.py
+      env:
+        KAFKA_SERVER: ${{ secrets.KAFKA_SERVER }}
+        MONGO_URI: ${{ secrets.MONGO_URI }}
+        KAFKA_USERNAME: ${{ secrets.KAFKA_USERNAME }}
+        KAFKA_PASSWORD: ${{ secrets.KAFKA_PASSWORD }}
+        KAFKA_SECURITY_PROTOCOL: ${{ secrets.KAFKA_SECURITY_PROTOCOL }}
+        KAFKA_SASL_MECHANISM: ${{ secrets.KAFKA_SASL_MECHANISM }}
+
+
     - name: 📡 Enviar resultados a Kafka (PostgreSQL)
       run: python producer_postgres.py
       env:
