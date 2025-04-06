@@ -33,14 +33,26 @@ jobs:
 
     - name: 📥 Descargar dataset y script
       run: |
-        wget -O dataset.csv ${{github.event.client_payload.dataseturl}}
-        wget -O app.py ${{github.event.client_payload.codeurl}}
+        wget -O dataset.csv ${{ github.event.client_payload.dataseturl }}
+        wget -O app.py ${{ github.event.client_payload.codeurl }}
 
     - name: 📝 Listar archivos descargados
       run: ls -la
 
     - name: 🚀 Ejecutar Spark
       run: spark-submit --master local app.py 
+
+    - name: 📡 Enviar resultados a Kafka (MongoDB)
+      run: python producer_mongo.py
+      env:
+        KAFKA_SERVER: ${{ secrets.KAFKA_SERVER }}
+        MONGO_URI: ${{ secrets.MONGO_URI }}
+
+    - name: 📡 Enviar resultados a Kafka (PostgreSQL)
+      run: python producer_postgres.py
+      env:
+        KAFKA_SERVER: ${{ secrets.KAFKA_SERVER }}
+        POSTGRES_URI: ${{ secrets.POSTGRES_URI }}
 
     - name: 🧰 Verificar resultados
       run: ls -la results
