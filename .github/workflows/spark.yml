@@ -51,12 +51,16 @@ jobs:
       env:
         KAFKA_SERVER: ${{ secrets.KAFKA_SERVER }}
         MONGO_URI: ${{ secrets.MONGO_URI }}
+        KAFKA_USERNAME: ${{ secrets.KAFKA_USERNAME }}
+        KAFKA_PASSWORD: ${{ secrets.KAFKA_PASSWORD }}
 
     - name: 📡 Enviar resultados a Kafka (PostgreSQL)
       run: python producer_postgres.py
       env:
         KAFKA_SERVER: ${{ secrets.KAFKA_SERVER }}
         POSTGRES_URI: ${{ secrets.POSTGRES_URI }}
+        KAFKA_USERNAME: ${{ secrets.KAFKA_USERNAME }}
+        KAFKA_PASSWORD: ${{ secrets.KAFKA_PASSWORD }}
 
     - name: 🧰 Verificar resultados
       run: ls -la results
