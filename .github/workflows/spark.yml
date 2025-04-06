@@ -6,6 +6,7 @@ on:
 jobs:
   spark:
     runs-on: ubuntu-latest
+    environment: social-media
 
     permissions:
       contents: write
