@@ -53,6 +53,8 @@ jobs:
         MONGO_URI: ${{ secrets.MONGO_URI }}
         KAFKA_USERNAME: ${{ secrets.KAFKA_USERNAME }}
         KAFKA_PASSWORD: ${{ secrets.KAFKA_PASSWORD }}
+        KAFKA_SECURITY_PROTOCOL: ${{ secrets.KAFKA_SECURITY_PROTOCOL }}
+        KAFKA_SASL_MECHANISM: ${{ secrets.KAFKA_SASL_MECHANISM }}
 
     - name: 📡 Enviar resultados a Kafka (PostgreSQL)
       run: python producer_postgres.py
@@ -61,6 +63,8 @@ jobs:
         POSTGRES_URI: ${{ secrets.POSTGRES_URI }}
         KAFKA_USERNAME: ${{ secrets.KAFKA_USERNAME }}
         KAFKA_PASSWORD: ${{ secrets.KAFKA_PASSWORD }}
+        KAFKA_SECURITY_PROTOCOL: ${{ secrets.KAFKA_SECURITY_PROTOCOL }}
+        KAFKA_SASL_MECHANISM: ${{ secrets.KAFKA_SASL_MECHANISM }}
 
     - name: 🧰 Verificar resultados
       run: ls -la results
