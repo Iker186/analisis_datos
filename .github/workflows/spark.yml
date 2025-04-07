@@ -47,7 +47,12 @@ jobs:
       run: spark-submit --master local app.py 
 
     - name: 📡 Enviar resultados a Kafka (MongoDB)
-      run: python producer_mongo.py
+      if: ${{ !env.SKIP_MONGO }}
+      run: |
+          if [ ! -f mongo.done ]; then
+            python producer_mongo.py
+            touch mongo.done
+          fi
       env:
         KAFKA_SERVER: ${{ secrets.KAFKA_SERVER }}
         MONGO_URI: ${{ secrets.MONGO_URI }}
@@ -57,7 +62,12 @@ jobs:
         KAFKA_SASL_MECHANISM: ${{ secrets.KAFKA_SASL_MECHANISM }}
 
     - name: 🧾 Consumir mensajes de Kafka y guardar en MongoDB
-      run: python consumer_mongo.py
+      if: ${{ !env.SKIP_MONGO }}
+      run: |
+          if [ ! -f mongo.done ]; then
+            python consumer_mongo.py
+            touch mongo.done
+          fi
       env:
         KAFKA_SERVER: ${{ secrets.KAFKA_SERVER }}
         MONGO_URI: ${{ secrets.MONGO_URI }}
