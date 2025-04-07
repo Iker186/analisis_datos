@@ -33,8 +33,14 @@ consumer = KafkaConsumer(
 
 for message in consumer:
     record = message.value
-    try:
-        collection.insert_one(record)
-        print(f"[✓] Guardado en MongoDB: {record}")
-    except Exception as e:
-        print(f"Error al guardar en MongoDB: {e}")
+    user_id = record.get("user_id")
+    
+    existing_record = collection.find_one({"user_id": user_id})
+    if existing_record:
+        print(f"[!] Registro con user_id {user_id} ya existe. No se insertará.")
+    else:
+        try:
+            collection.insert_one(record)
+            print(f"[✓] Guardado en MongoDB: {record}")
+        except Exception as e:
+            print(f"Error al guardar en MongoDB: {e}")
