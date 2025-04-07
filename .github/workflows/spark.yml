@@ -66,12 +66,29 @@ jobs:
         KAFKA_SECURITY_PROTOCOL: ${{ secrets.KAFKA_SECURITY_PROTOCOL }}
         KAFKA_SASL_MECHANISM: ${{ secrets.KAFKA_SASL_MECHANISM }}
 
-
     - name: 📡 Enviar resultados a Kafka (PostgreSQL)
       run: python producer_postgres.py
       env:
         KAFKA_SERVER: ${{ secrets.KAFKA_SERVER }}
-        POSTGRES_URI: ${{ secrets.POSTGRES_URI }}
+        POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+        POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+        POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+        POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+        KAFKA_USERNAME: ${{ secrets.KAFKA_USERNAME }}
+        KAFKA_PASSWORD: ${{ secrets.KAFKA_PASSWORD }}
+        KAFKA_SECURITY_PROTOCOL: ${{ secrets.KAFKA_SECURITY_PROTOCOL }}
+        KAFKA_SASL_MECHANISM: ${{ secrets.KAFKA_SASL_MECHANISM }}
+
+    - name: 🧾 Consumir mensajes de Kafka y guardar en PostgreSQL
+      run: python consumer_postgres.py
+      env:
+        KAFKA_SERVER: ${{ secrets.KAFKA_SERVER }}
+        POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+        POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+        POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+        POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
         KAFKA_USERNAME: ${{ secrets.KAFKA_USERNAME }}
         KAFKA_PASSWORD: ${{ secrets.KAFKA_PASSWORD }}
         KAFKA_SECURITY_PROTOCOL: ${{ secrets.KAFKA_SECURITY_PROTOCOL }}
