@@ -5,7 +5,7 @@ import os
 
 # Configuración de Kafka y PostgreSQL
 KAFKA_BROKER = os.getenv('KAFKA_SERVER')
-TOPIC = os.getenv('KAFKA_TOPIC_POSTGRES', 'results_postgres')
+TOPIC = os.getenv('KAFKA_TOPIC_POSTGRES', 'results_topic')
 
 POSTGRES_CONFIG = {
     "dbname": os.getenv('POSTGRES_DB'),
