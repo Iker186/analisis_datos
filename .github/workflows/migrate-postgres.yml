@@ -46,4 +46,3 @@ jobs:
         KAFKA_USERNAME: ${{ secrets.KAFKA_USERNAME }}
         KAFKA_PASSWORD: ${{ secrets.KAFKA_PASSWORD }}
         KAFKA_SECURITY_PROTOCOL: ${{ secrets.KAFKA_SECURITY_PROTOCOL }}
-        KAFKA_SASL_MECHANISM: ${{ secrets.KAFKA_SASL_MECHANISM }}

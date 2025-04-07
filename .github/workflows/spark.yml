@@ -1,4 +1,5 @@
 name: spark
+
 on:
   repository_dispatch:
     types: [spark]
@@ -46,64 +47,6 @@ jobs:
     - name: 🚀 Ejecutar Spark
       run: spark-submit --master local app.py 
 
-    - name: 📡 Enviar resultados a Kafka (MongoDB)
-      if: ${{ !env.SKIP_MONGO }}
-      run: |
-          if [ ! -f mongo.done ]; then
-            python producer_mongo.py
-            touch mongo.done
-          fi
-      env:
-        KAFKA_SERVER: ${{ secrets.KAFKA_SERVER }}
-        MONGO_URI: ${{ secrets.MONGO_URI }}
-        KAFKA_USERNAME: ${{ secrets.KAFKA_USERNAME }}
-        KAFKA_PASSWORD: ${{ secrets.KAFKA_PASSWORD }}
-        KAFKA_SECURITY_PROTOCOL: ${{ secrets.KAFKA_SECURITY_PROTOCOL }}
-        KAFKA_SASL_MECHANISM: ${{ secrets.KAFKA_SASL_MECHANISM }}
-
-    - name: 🧾 Consumir mensajes de Kafka y guardar en MongoDB
-      if: ${{ !env.SKIP_MONGO }}
-      run: |
-          if [ ! -f mongo.done ]; then
-            python consumer_mongo.py
-            touch mongo.done
-          fi
-      env:
-        KAFKA_SERVER: ${{ secrets.KAFKA_SERVER }}
-        MONGO_URI: ${{ secrets.MONGO_URI }}
-        KAFKA_USERNAME: ${{ secrets.KAFKA_USERNAME }}
-        KAFKA_PASSWORD: ${{ secrets.KAFKA_PASSWORD }}
-        KAFKA_SECURITY_PROTOCOL: ${{ secrets.KAFKA_SECURITY_PROTOCOL }}
-        KAFKA_SASL_MECHANISM: ${{ secrets.KAFKA_SASL_MECHANISM }}
-
-    - name: 📡 Enviar resultados a Kafka (PostgreSQL)
-      run: python producer_postgres.py
-      env:
-        KAFKA_SERVER: ${{ secrets.KAFKA_SERVER }}
-        POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-        POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-        POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-        POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
-        POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
-        KAFKA_USERNAME: ${{ secrets.KAFKA_USERNAME }}
-        KAFKA_PASSWORD: ${{ secrets.KAFKA_PASSWORD }}
-        KAFKA_SECURITY_PROTOCOL: ${{ secrets.KAFKA_SECURITY_PROTOCOL }}
-        KAFKA_SASL_MECHANISM: ${{ secrets.KAFKA_SASL_MECHANISM }}
-
-    - name: 🧾 Consumir mensajes de Kafka y guardar en PostgreSQL
-      run: python consumer_postgres.py
-      env:
-        KAFKA_SERVER: ${{ secrets.KAFKA_SERVER }}
-        POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-        POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-        POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-        POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
-        POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
-        KAFKA_USERNAME: ${{ secrets.KAFKA_USERNAME }}
-        KAFKA_PASSWORD: ${{ secrets.KAFKA_PASSWORD }}
-        KAFKA_SECURITY_PROTOCOL: ${{ secrets.KAFKA_SECURITY_PROTOCOL }}
-        KAFKA_SASL_MECHANISM: ${{ secrets.KAFKA_SASL_MECHANISM }}
-
     - name: 🧰 Verificar resultados
       run: ls -la results
 
@@ -115,17 +58,10 @@ jobs:
         git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
         git config --global user.email "sancheziker549@gmail.com"
     
-        # 🔥 Guardar cambios antes del pull
         git stash --include-untracked
-    
-        # 🚀 Hacer pull para evitar conflictos
         git pull origin main --rebase
-    
-        # 🔄 Restaurar cambios después del pull
         git stash pop || echo "No changes to restore"
     
         git add results/
         git commit -m "${{ env.CI_COMMIT_MESSAGE }}" || echo "No changes to commit"
-    
-        # ⚡️ Push cambios actualizados
         git push origin main
