@@ -55,11 +55,11 @@ col3, col4 = st.columns(2)
 
 with col3:
     if st.button("🐳 POST Mongo workflow"):
-        post_spark_job(github_user, github_repo, "migrate-mongo", github_token, code_url, dataset_url)
+        post_spark_job(github_user, github_repo, "migrate_mongo", github_token, code_url, dataset_url)
 
 with col4:
     if st.button("🐘 POST PostgreSQL workflow"):
-        post_spark_job(github_user, github_repo, "migrate-postgres", github_token, code_url, dataset_url)
+        post_spark_job(github_user, github_repo, "migrate_postgres", github_token, code_url, dataset_url)
 
 st.markdown("---")
 st.subheader("📥 Obtener resultados")
