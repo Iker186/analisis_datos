@@ -17,6 +17,7 @@ POSTGRES_CONFIG = {
 
 try:
     # Conexión a PostgreSQL
+    print(f"📡 POSTGRES_HOST recibido: '{POSTGRES_CONFIG['host']}'")
     conn = psycopg2.connect(**POSTGRES_CONFIG)
     cur = conn.cursor()
 
