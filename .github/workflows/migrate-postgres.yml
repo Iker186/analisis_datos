@@ -2,7 +2,7 @@ name: migrate-postgres
 
 on:
   repository_dispatch:
-    types: [migrate_postgres]
+    types: [migrate-postgres]
 
 jobs:
   migrate-postgres:
