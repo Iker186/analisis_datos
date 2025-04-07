@@ -1,0 +1,41 @@
+name: migrate-mongo
+
+on:
+  repository_dispatch:
+    types: [migrate_mongo]
+
+jobs:
+  migrate-mongo:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 🛒 Clonar el repositorio
+      uses: actions/checkout@v4
+
+    - name: 🐍 Configurar Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: 📦 Instalar dependencias
+      run: pip install --upgrade pip && pip install -r requirements.txt
+
+    - name: 📡 Enviar resultados a Kafka (MongoDB)
+      run: python producer_mongo.py
+      env:
+        KAFKA_SERVER: ${{ secrets.KAFKA_SERVER }}
+        MONGO_URI: ${{ secrets.MONGO_URI }}
+        KAFKA_USERNAME: ${{ secrets.KAFKA_USERNAME }}
+        KAFKA_PASSWORD: ${{ secrets.KAFKA_PASSWORD }}
+        KAFKA_SECURITY_PROTOCOL: ${{ secrets.KAFKA_SECURITY_PROTOCOL }}
+        KAFKA_SASL_MECHANISM: ${{ secrets.KAFKA_SASL_MECHANISM }}
+
+    - name: 🧾 Consumir mensajes de Kafka y guardar en MongoDB
+      run: python consumer_mongo.py
+      env:
+        KAFKA_SERVER: ${{ secrets.KAFKA_SERVER }}
+        MONGO_URI: ${{ secrets.MONGO_URI }}
+        KAFKA_USERNAME: ${{ secrets.KAFKA_USERNAME }}
+        KAFKA_PASSWORD: ${{ secrets.KAFKA_PASSWORD }}
+        KAFKA_SECURITY_PROTOCOL: ${{ secrets.KAFKA_SECURITY_PROTOCOL }}
+        KAFKA_SASL_MECHANISM: ${{ secrets.KAFKA_SASL_MECHANISM }}
